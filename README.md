@@ -6,6 +6,23 @@
 2. Revina Rahmanisa (05311940000046)
 3. Ghymnastiar AL Abiyyuna (05311940000042)
 
+# Daftar Isi
+## Daftar Isi 
+* [Soal 1](#soal-1) 
+  * [Penyelesaian.](#penyelesaian) 
+  * [Output.](#output) 
+  * [Kendala.](#Kendala) 
+* [Soal 2](#soal-2) 
+   * [Penyelesaian.](#penyelesaian) 
+  * [Output.](#output) 
+  * [Kendala.](#Kendala) 
+* [Soal 3](#soal-3) 
+   * [Penyelesaian.](#penyelesaian) 
+  * [Output.](#output) 
+  * [Kendala.](#Kendala) 
+
+
+        
 # Soal 1
 
 Pada suatu masa, hiduplah seorang Steven yang hidupnya pas-pasan. Steven punya pacar, namun sudah putus sebelum pacaran. Ketika dia galau memikirkan mantan, ia selalu menonton https://www.youtube.com/watch?v=568DH_9CMKI untuk menghilangkan kesedihannya. 
@@ -48,13 +65,16 @@ contoh
 Wget --no-check-certificate "https://drive.google.com/uc?id=1ZG8nRBRPquhYXq_sISdsVcXx5VdEgi-J&export=download" -O Musik_for_Stevany.zip
 
 ```
-<h2> 1. Penjelasan </h2>
+## Penyelesaian 
 
-<p> dari apa yang saya baca </p>
-<h2> 2. Hasil </h2>
-<p> source code</p>
-<h2> 3. Kesulitan </h2>
-<p> banyak </p>
+
+## Output
+
+
+
+## Kendala
+
+
 
 # Soal 2
 Loba bekerja di sebuah petshop terkenal, suatu saat dia mendapatkan zip yang berisi banyak sekali foto peliharaan dan Ia diperintahkan untuk mengkategorikan foto-foto peliharaan tersebut. Loba merasa kesusahan melakukan pekerjaanya secara manual, apalagi ada kemungkinan ia akan diperintahkan untuk melakukan hal yang sama. Kamu adalah teman baik Loba dan Ia meminta bantuanmu untuk membantu pekerjaannya.
@@ -80,14 +100,31 @@ Setiap data peliharaan disimpan sebagai nama foto dengan format [jenis peliharaa
 Tidak boleh menggunakan fungsi system(), mkdir(), dan rename().
 Menggunakan fork dan exec.
 ```
-<h2> 1. Penjelasan </h2>
+## Penyelesaian 
+```c
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <unistd.h>
+#include <syslog.h>
+#include <string.h>
+#include <time.h>
+#include <wait.h>
+```
+<p> inisialisasi library </p>
 
-<p> dari apa yang saya baca </p>
-<h2> 2. Hasil </h2>
-<p> source code</p>
-<h2> 3. Kesulitan </h2>
-<p> banyak </p>
 
+
+
+## Output
+
+
+
+## Kendala
+masih mampu menjalankan mode selain -z -x padahal sudah ada else untuk exit tapi kami masih belum tau cara penyelesaiannya. 
 
 
 
@@ -111,11 +148,11 @@ Tidak boleh menggunakan system() dan mkdir()
 Program utama merupakan SEBUAH PROGRAM C
 Wajib memuat algoritma Caesar Cipher pada program utama yang dibuat
 ```
-<h2> 1. Penjelasan </h2>
+## Penyelesaian 
 
-<p> dari apa yang saya baca </p>
-<h2> 2. Hasil </h2>
-<p> source code</p>
-<h2> 3. Kesulitan </h2>
-<p> banyak </p>
 
+## Output
+
+
+
+## Kendala

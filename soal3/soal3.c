@@ -1,111 +1,152 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <unistd.h>
 #include <syslog.h>
 #include <string.h>
 #include <time.h>
-#include <signal.h>
 #include <wait.h>
 
-
-char *enkripsi(char *str, int key){
-  int pjg = strlen(str);
-  char *size, new;
-  size = (char*)malloc(sizeof(char) * (pjg +1));
-
-  for (int i = 0; i < pjg; ++i) {
-    char j = *(str + i);
-    if ('a' <= j && j <= 'z'){
-      new = ((*(str + i) - 'a' + key) %26) + 'a';
-    } else if ('A' <= j && j <= 'Z'){
-      new = ((*(str + i) - 'A' + key) %26) + 'A';
-    } else if ('0' <= j && j <= '9'){
-      new = ((*(str + i) - '0' + key) %10) + '0';
-    } else {
-      new = *(str + i);
+// program bash killer.sh untuk mengehntikan proses
+void killersh(int argc,char **argv,int pid){
+    FILE *pkiller = fopen("killer.sh", "w");
+    if(strcmp(argv[1], "-x") == 0 && argc == 2){ 
+        fprintf(pkiller, "#!/bin/bash\nkill %d\nrm \"$0\"", pid);
+    }else if(strcmp(argv[1], "-z") == 0 && argc == 2){ 
+        fprintf(pkiller, "#!/bin/bash\nkillall -9 soal3\nrm \"$0\"");
+    }else {
+        printf("argument  salah %s. pilih -x / -z\n", argv[1]);
+        exit(EXIT_FAILURE);
     }
-    *(size + i) = new;
-  }
-  return size;
+    fclose(pkiller);
+
+    if(fork() == 0){
+        char *chomdargv[] = {"chmod", "+x", "killer.sh", NULL};
+        execv("/bin/chmod", chomdargv);
+    }
+}
+//pembuatan folder untuk menaruh gambar yang didownload
+void createfolder(char *foldername){
+    if(fork()==0){ 
+        char *mkdirargv[] = {"mkdir", "-p",foldername, NULL};
+        execv("/bin/mkdir", mkdirargv);
+    }
+}
+// program untuk mendownload file gambar dari url yg ditentukan
+void dlgb(char *foldername){
+    time_t rawtime;
+    int i,size;
+    char filename[200];
+    char buffer[100];
+    char urlname[100];
+
+    for(i=0;i<10;i++){
+        time(&rawtime);
+        strftime(buffer, 100, "%Y-%m-%d_%X", localtime(&rawtime));
+        sprintf(filename,"%s/%s.jpg",foldername,buffer);
+        size = (int)time(NULL);
+        size = (size%1000)+50;
+        sprintf(urlname,"https://picsum.photos/%d",size);
+
+        if(fork()==0){
+            char *dlargv[] = {"wget", "-qO", filename, urlname, NULL};
+            execv("/usr/bin/wget", dlargv);
+        }
+        sleep(5);
+    }
 }
 
-int main(int argc,char* argv[]) { 
+//direktori di zip setelah download gambar
+void zip(char *foldername){
+    char zipname[150];
+    sprintf(zipname,"%s.zip",foldername);
+    char *zipargv[] = {"zip", "-rmq", zipname, foldername, NULL};
+    execv("/usr/bin/zip", zipargv);
+}
 
-  pid_t pid, sid;        // Variabel untuk menyimpan PID
-  pid_t child_id;
-
-  pid = fork();     // Menyimpan PID dari Child Process
-  child_id = fork();
-  /* Keluar saat fork gagal
-  * (nilai variabel pid < 0) */
-  if (pid < 0) {
-    exit(EXIT_FAILURE);
-  }
-
-  /* Keluar saat fork berhasil
-  * (nilai variabel pid adalah PID dari child process) */
-  if (pid > 0) {
-    exit(EXIT_SUCCESS);
-  }
-
-  umask(0);
-
-  sid = setsid();
-  if (sid < 0) {
-    exit(EXIT_FAILURE);
-  }
-
-  close(STDIN_FILENO);
-  close(STDOUT_FILENO);
-  close(STDERR_FILENO);
-  
-  if (child_id < 0) {
-    exit(EXIT_FAILURE);
-  }
-
-  while (1){
-      char newFile[100], folderName[100], url[100], zipfile[100];
-      char *isi = enkripsi("Download Success." , 5);
-      time_t rawtime, loctime; // rawtime menyimpan timestamp dlm format epoch
-      struct tm * cur_time, * nex_time; // tm untuk menyimpan timestamp yang sesuai dengan local time
-      rawtime = time(NULL); // untuk mengambil local time pada linux
-      cur_time = localtime (&rawtime);  
-      strftime(folderName, 100, "/home/clae/Modul2/%Y-%m-%d_%H:%M:%S", cur_time); // untuk membuat direktori baru dengan nama format file berupa timestamp dan isi direktori kosong.
-      strftime(zipfile, 100, "%Y-%m-%d_%H:%M:%S", cur_time);
-
-      if(fork()==0)
-      {
-        execl("/bin/mkdir","mkdir","-p",folderName, NULL); 
-      }
-
-      if(fork()==0){
-        for(int i=0; i<10 ;i++){
-          loctime = time(NULL);
-          nex_time = localtime(&rawtime);
-          if(fork()==0){
-            strftime(newFile, 100, "/%Y-%m-%d_%H:%M:%S", nex_time);
-            strcat(folderName, newFile);
-            int file_size = ((loctime % 1000) + 50);
-            sprintf(url,"https://picsum.photos/%d",file_size);
-            execl("/usr/bin/wget","wget","-O", folderName, url, NULL);
-          }
-          sleep(5);
+//program enkripsi 
+void enkrip(char* rawstring,int shift){
+    char enk;
+    int i;
+    for (i=0;rawstring[i]!='\0';i++){
+        enk = rawstring[i];
+        if(enk>='A'&&enk<='Z'){
+            enk=enk+shift;
+            if (enk > 'Z') enk = enk-'Z'+'A'-1;
+            rawstring[i] = enk;
         }
-
-        FILE *fp;
-        fp = fopen ("status.txt", "w");
-        fprintf(fp, "%s", isi);
-        fclose(fp);
-
-        pid = wait(NULL);
-        if(fork()==0){   
-          execl("/usr/bin/zip","zip","-rm", zipfile, zipfile, NULL);
-          }
+        else if (enk>='a'&&enk<='z'){
+            enk=enk+shift;
+            if (enk > 'z') enk = enk-'z'+'a'-1;
+            rawstring[i] = enk;
         }
-    sleep(40);     
-      }
     }
+}
+
+//program membuat status.txt 
+void statustext(char *foldername){    
+    char status[112];
+    char message[20] = "Download Success";
+    sprintf(status,"%s/status.txt",foldername);
+    enkrip(message,5);
+    FILE *download = fopen(status,"w");
+    fprintf(download,"%s",message);
+    fclose(download);
+}
+
+
+void final(char *foldername){
+    int child1;
+    if(fork()==0){ 
+        dlgb(foldername);
+        statustext(foldername);
+        zip(foldername);
+    }
+}
+
+
+int main(int argc, char **argv){
+    pid_t pid, sid; // Variabel untuk menyimpan PID
+    char tempfile[100];
+    time_t rawtime;
+
+    pid = fork(); // Menyimpan PID dari Child Process
+
+    /* Keluar saat fork gagal (nilai variabel pid < 0) */
+    if (pid < 0) exit(EXIT_FAILURE);
+
+    /* Keluar saat fork berhasil (nilai variabel pid adalah PID dari child process) */
+    if (pid > 0) exit(EXIT_SUCCESS);
+
+    umask(0);
+
+    sid = setsid();
+    if (sid < 0) exit(EXIT_FAILURE);
+
+    close(STDIN_FILENO);
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
+
+    killersh(argc,argv,(int)getpid());
+
+    while (1){
+        int child1;
+
+        //buat folder berdasarkan timestamp
+        time(&rawtime);
+        strftime(tempfile, 100, "%Y-%m-%d_%X", localtime(&rawtime));
+        createfolder(tempfile);
+        //menunggu folder selesai
+        while((wait(&child1))>0);
+        //proses zip 10 gambar
+        final(tempfile);
+        //menunggu folder di zip
+        while((wait(&child1))>0);
+
+        sleep(40); 
+    }
+
+}
