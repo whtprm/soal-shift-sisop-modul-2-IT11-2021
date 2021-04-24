@@ -11,15 +11,15 @@
 * [Soal 1](#soal-1) 
   * [Penyelesaian.](#penyelesaian) 
   * [Output.](#output) 
-  * [Kendala.](#Kendala) 
+  * [Kendala.](#Kendala Soal 1) 
 * [Soal 2](#soal-2) 
    * [Penyelesaian.](#penyelesaian) 
   * [Output.](#output) 
-  * [Kendala.](#Kendala) 
+  * [Kendala.](#Kendala Soal 2) 
 * [Soal 3](#soal-3) 
   * [Penyelesaian.](#penyelesaian) 
   * [Output.](#output) 
-  * [Kendala.](#Kendala) 
+  * [Kendala.](#Kendala Soal 3) 
 
 
         
@@ -69,7 +69,7 @@ Wget --no-check-certificate "https://drive.google.com/uc?id=1ZG8nRBRPquhYXq_sISd
 
 ## Output
 
-## Kendala
+## Kendala soal 1
 
 # Soal 2
 Loba bekerja di sebuah petshop terkenal, suatu saat dia mendapatkan zip yang berisi banyak sekali foto peliharaan dan Ia diperintahkan untuk mengkategorikan foto-foto peliharaan tersebut. Loba merasa kesusahan melakukan pekerjaanya secara manual, apalagi ada kemungkinan ia akan diperintahkan untuk melakukan hal yang sama. Kamu adalah teman baik Loba dan Ia meminta bantuanmu untuk membantu pekerjaannya.
@@ -99,9 +99,7 @@ Menggunakan fork dan exec.
 
 ## Output
 
-## Kendala
-masih mampu menjalankan mode selain -z -x padahal sudah ada else untuk exit tapi kami masih belum tau cara penyelesaiannya. 
-
+## Kendala soal 2
 
 
 # Soal 3
@@ -319,6 +317,6 @@ Masih didalam parameter fungsi main dimana nanti akan membuat folder bedasarkan 
 <img src="https://cdn.discordapp.com/attachments/830775203868573756/835349255912161320/m_odex.jpg">
 
 
-## Kendala
+## Kendala soal 3
 
 kendala utama yang dialami pada pengerjaan soal 3 ialah pembuatan folder tidak konsisten dilakukan setiap 40 detik
