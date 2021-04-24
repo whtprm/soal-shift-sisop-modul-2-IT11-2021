@@ -317,6 +317,6 @@ Masih didalam parameter fungsi main dimana nanti akan membuat folder bedasarkan 
 <img src="https://cdn.discordapp.com/attachments/830775203868573756/835349255912161320/m_odex.jpg">
 
 
-## Kendala-soal3
+## Kendala-soal-3
 
 kendala utama yang dialami pada pengerjaan soal 3 ialah pembuatan folder tidak konsisten dilakukan setiap 40 detik
