@@ -9,17 +9,17 @@
 # Daftar Isi
 ## Daftar Isi 
 * [Soal 1](#soal-1) 
-  * [Penyelesaian.](#penyelesaian) 
-  * [Output.](#output) 
-  * [Kendala.](#Kendala-Soal1) 
+  * [Penyelesaian.](#penyelesaian-soal-1) 
+  * [Output.](#output-soal-1) 
+  * [Kendala.](#Kendala-Soal-1) 
 * [Soal 2](#soal-2) 
-   * [Penyelesaian.](#penyelesaian) 
-  * [Output.](#output) 
-  * [Kendala.](#Kendala-Soal2) 
+   * [Penyelesaian.](#penyelesaian-soal-2) 
+  * [Output.](#output-soal-2) 
+  * [Kendala.](#Kendala-Soal-2) 
 * [Soal 3](#soal-3) 
-  * [Penyelesaian.](#penyelesaian) 
-  * [Output.](#output) 
-  * [Kendala.](#Kendala-Soal3) 
+  * [Penyelesaian.](#penyelesaian-soal-3) 
+  * [Output.](#output-soal-3) 
+  * [Kendala.](#Kendala-Soal-3) 
 
 
         
@@ -65,11 +65,11 @@ contoh
 Wget --no-check-certificate "https://drive.google.com/uc?id=1ZG8nRBRPquhYXq_sISdsVcXx5VdEgi-J&export=download" -O Musik_for_Stevany.zip
 
 ```
-## Penyelesaian 
+## Penyelesaian-soal-1
 
-## Output
+## Output-soa-1
 
-## Kendala-soal1
+## Kendala-soal-1
 
 # Soal 2
 Loba bekerja di sebuah petshop terkenal, suatu saat dia mendapatkan zip yang berisi banyak sekali foto peliharaan dan Ia diperintahkan untuk mengkategorikan foto-foto peliharaan tersebut. Loba merasa kesusahan melakukan pekerjaanya secara manual, apalagi ada kemungkinan ia akan diperintahkan untuk melakukan hal yang sama. Kamu adalah teman baik Loba dan Ia meminta bantuanmu untuk membantu pekerjaannya.
@@ -95,11 +95,11 @@ Setiap data peliharaan disimpan sebagai nama foto dengan format [jenis peliharaa
 Tidak boleh menggunakan fungsi system(), mkdir(), dan rename().
 Menggunakan fork dan exec.
 ```
-## Penyelesaian 
+## Penyelesaian-soal-2
 
-## Output
+## Output-soal-2
 
-## Kendala-soal2
+## Kendala-soal-2
 
 
 # Soal 3
@@ -122,7 +122,7 @@ Tidak boleh menggunakan system() dan mkdir()
 Program utama merupakan SEBUAH PROGRAM C
 Wajib memuat algoritma Caesar Cipher pada program utama yang dibuat
 ```
-## Penyelesaian 
+## Penyelesaian-soal-3
 ```c
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -302,7 +302,7 @@ Pada fungsi main diberikan daemon agar program berjalan di background
 ```
 
 Masih didalam parameter fungsi main dimana nanti akan membuat folder bedasarkan timestamp lalu lalu di ```wait``` hingga folder selesai yang kemudian di zip dan selagi mengzip folder program akan mulai membuat direktori baru setelah 40 detik
-## Output
+## Output-soal-3
 
 - compile dan run dalam mode ``` -z ```
 <img src="https://cdn.discordapp.com/attachments/830775203868573756/835349233606590484/modez.jpg">
