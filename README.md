@@ -4,7 +4,7 @@
 ## Disusun oleh :
 1. Clarissa Fatimah (05311940000012)
 2. Revina Rahmanisa (05311940000046)
-3. Ghymnastiar AL Abiyyuna (05311940000042)
+3. Ghimnastiar AL Abiyyuna (05311940000042)
 
 # Daftar Isi
 ## Daftar Isi 
@@ -17,7 +17,7 @@
   * [Output.](#output) 
   * [Kendala.](#Kendala) 
 * [Soal 3](#soal-3) 
-   * [Penyelesaian.](#penyelesaian) 
+  * [Penyelesaian.](#penyelesaian) 
   * [Output.](#output) 
   * [Kendala.](#Kendala) 
 
@@ -67,14 +67,9 @@ Wget --no-check-certificate "https://drive.google.com/uc?id=1ZG8nRBRPquhYXq_sISd
 ```
 ## Penyelesaian 
 
-
 ## Output
 
-
-
 ## Kendala
-
-
 
 # Soal 2
 Loba bekerja di sebuah petshop terkenal, suatu saat dia mendapatkan zip yang berisi banyak sekali foto peliharaan dan Ia diperintahkan untuk mengkategorikan foto-foto peliharaan tersebut. Loba merasa kesusahan melakukan pekerjaanya secara manual, apalagi ada kemungkinan ia akan diperintahkan untuk melakukan hal yang sama. Kamu adalah teman baik Loba dan Ia meminta bantuanmu untuk membantu pekerjaannya.
@@ -101,27 +96,8 @@ Tidak boleh menggunakan fungsi system(), mkdir(), dan rename().
 Menggunakan fork dan exec.
 ```
 ## Penyelesaian 
-```c
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <unistd.h>
-#include <syslog.h>
-#include <string.h>
-#include <time.h>
-#include <wait.h>
-```
-<p> inisialisasi library </p>
-
-
-
 
 ## Output
-
-
 
 ## Kendala
 masih mampu menjalankan mode selain -z -x padahal sudah ada else untuk exit tapi kami masih belum tau cara penyelesaiannya. 
@@ -149,10 +125,200 @@ Program utama merupakan SEBUAH PROGRAM C
 Wajib memuat algoritma Caesar Cipher pada program utama yang dibuat
 ```
 ## Penyelesaian 
+```c
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <unistd.h>
+#include <syslog.h>
+#include <string.h>
+#include <time.h>
+#include <wait.h>
+```
+Berikut merupakan daftar Library yang digunakan pada soal 3
 
+```c
+void killersh(int argc,char **argv,int pid){
+    FILE *pkiller = fopen("killer.sh", "w");
+    if(strcmp(argv[1], "-x") == 0 && argc == 2){ 
+        fprintf(pkiller, "#!/bin/bash\nkill %d\nrm \"$0\"", pid);
+    }else if(strcmp(argv[1], "-z") == 0 && argc == 2){ 
+        fprintf(pkiller, "#!/bin/bash\nkillall -9 soal3\nrm \"$0\"");
+    }else {
+        printf("argument  salah %s. pilih -x / -z\n", argv[1]);
+        exit(EXIT_FAILURE);
+    }
+    fclose(pkiller);
 
+    if(fork() == 0){
+        char *chomdargv[] = {"chmod", "+x", "killer.sh", NULL};
+        execv("/bin/chmod", chomdargv);
+    }
+}
+```
+Pada Fungsi killersh program akan membuat program killer dalam bentuk bash, dengan command ``` fopen ``` untuk membuat file baru dengan command w, dan command printf untuk menuliskan source code killer. lalu memanggil fork dan exec untuk mengganti hak akses file menggunakan ``` {"chmod", "+x", "killer.sh", NULL} ```. Pada killer.sh terdapat 2 argumen berupa ``` -z ``` dan ``` -x ``` (2 mode yaitu z atau x) dimana z langsung berhenti tanpa menyelesaikan semuanya terlebih dahulu.
+
+```c
+void createfolder(char *foldername){
+    if(fork()==0){ 
+        char *mkdirargv[] = {"mkdir", "-p",foldername, NULL};
+        execv("/bin/mkdir", mkdirargv);
+    }
+}
+```
+Setelah itu dengan menggunakan exec dan fork akan membuat suatu folder dengan nama variable ``` foldername ``` yang nantinya berjalan setiap 40 detik.
+
+```c
+void dlgb(char *foldername){
+    time_t rawtime;
+    int i,size;
+    char filename[200];
+    char buffer[100];
+    char urlname[100];
+
+    for(i=0;i<10;i++){
+        time(&rawtime);
+        strftime(buffer, 100, "%Y-%m-%d_%X", localtime(&rawtime));
+        sprintf(filename,"%s/%s.jpg",foldername,buffer);
+        size = (int)time(NULL);
+        size = (size%1000)+50;
+        sprintf(urlname,"https://picsum.photos/%d",size);
+
+        if(fork()==0){
+            char *dlargv[] = {"wget", "-qO", filename, urlname, NULL};
+            execv("/usr/bin/wget", dlargv);
+        }
+        sleep(5);
+    }
+}
+```
+
+Pada fungsi dlgb, program akan mendownload gambar menggunakan fungsi fork dan exec untuk memanggil ``` wget ``` dengan format sesuai timestamp, karena program akan mendownload sebanyak 10 gambar maka digunakan loop ``` for(i=0;i<10;i++) ``` dengan ``` sleep(5) ``` untuk setiap gambarnya.
+
+```c
+void zip(char *foldername){
+    char zipname[150];
+    sprintf(zipname,"%s.zip",foldername);
+    char *zipargv[] = {"zip", "-rmq", zipname, foldername, NULL};
+    execv("/usr/bin/zip", zipargv);
+}
+```
+Pada fungsi zip akan menggunakan exec untuk mengzip folder setelah selesai melakukan pendownload tan pada 10 gambar.
+``` sprintf(zipname,"%s.zip",foldername); ``` digunakan untuk mendapatkan namafolder.
+
+```c
+void enkrip(char* rawstring,int shift){
+    char enk;
+    int i;
+    for (i=0;rawstring[i]!='\0';i++){
+        enk = rawstring[i];
+        if(enk>='A'&&enk<='Z'){
+            enk=enk+shift;
+            if (enk > 'Z') enk = enk-'Z'+'A'-1;
+            rawstring[i] = enk;
+        }
+        else if (enk>='a'&&enk<='z'){
+            enk=enk+shift;
+            if (enk > 'z') enk = enk-'z'+'a'-1;
+            rawstring[i] = enk;
+        }
+    }
+}
+```
+
+Pada Fungsi enkrip berisikan program yang akan mengenkripsi suatu pesan pada dungsi statustext menggunakan teknik enkripsi CAesar Cipher dengan Shift 5
+
+```c
+void statustext(char *foldername){    
+    char status[112];
+    char message[20] = "Download Success";
+    sprintf(status,"%s/status.txt",foldername);
+    enkrip(message,5);
+    FILE *download = fopen(status,"w");
+    fprintf(download,"%s",message);
+    fclose(download);
+}
+```
+Selanjut pada fungsi statustextlah program akan membuat file .txt bernama status yang isinya adalah pesan ``` Download Succes ```
+namun pesan tersebut lalu dienkripsi dengan teknik Caesar Cipher dengan shift 5 sesuai pada fungsi enkrip
+
+```c
+void final(char *foldername){
+    int child1;
+    if(fork()==0){ 
+        dlgb(foldername);
+        statustext(foldername);
+        zip(foldername);
+    }
+}
+```
+Pada Fungsi final merupakan deretan procces dimana pertama menjalankan fungsi dlgb untuk mendownload gambar, lalu fungsi statustext untuk membuat status.txt yang kemudian diengkripsi, dan terakhir di zip pada fungsi zip
+
+```c
+int main(int argc, char **argv){
+    pid_t pid, sid; // Variabel untuk menyimpan PID
+    char tempfile[100];
+    time_t rawtime;
+
+    pid = fork(); // Menyimpan PID dari Child Process
+
+    /* Keluar saat fork gagal (nilai variabel pid < 0) */
+    if (pid < 0) exit(EXIT_FAILURE);
+
+    /* Keluar saat fork berhasil (nilai variabel pid adalah PID dari child process) */
+    if (pid > 0) exit(EXIT_SUCCESS);
+
+    umask(0);
+
+    sid = setsid();
+    if (sid < 0) exit(EXIT_FAILURE);
+
+    close(STDIN_FILENO);
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
+```
+Pada fungsi main diberikan daemon agar program berjalan di background
+
+```c
+ while (1){
+        int child1;
+
+        //buat folder berdasarkan timestamp
+        time(&rawtime);
+        strftime(tempfile, 100, "%Y-%m-%d_%X", localtime(&rawtime));
+        createfolder(tempfile);
+        //menunggu folder selesai
+        while((wait(&child1))>0);
+        //proses zip 10 gambar
+        final(tempfile);
+        //menunggu folder di zip
+        while((wait(&child1))>0);
+
+        sleep(40); 
+    }
+
+}
+```
+
+Masih didalam parameter fungsi main dimana nanti akan membuat folder bedasarkan timestamp lalu lalu di ```wait``` hingga folder selesai yang kemudian di zip dan selagi mengzip folder program akan mulai membuat direktori baru setelah 40 detik
 ## Output
 
+- compile dan run dalam mode ``` -z ```
+<img src="https://cdn.discordapp.com/attachments/830775203868573756/835349233606590484/modez.jpg">
+
+- Output Folder dan atau zip pada mode ``` -z ```
+<img src="https://cdn.discordapp.com/attachments/830775203868573756/835349239026155540/outputz.jpg">
+
+- Isi
+<img src="https://cdn.discordapp.com/attachments/830775203868573756/835349253240913940/isiz.jpg">
+
+- Output Folder dan atau zip jika dilakukan dengan mode ``` -x ```
+<img src="https://cdn.discordapp.com/attachments/830775203868573756/835349255912161320/m_odex.jpg">
 
 
 ## Kendala
+
+kendala utama yang dialami pada pengerjaan soal 3 ialah pembuatan folder tidak konsisten dilakukan setiap 40 detik
