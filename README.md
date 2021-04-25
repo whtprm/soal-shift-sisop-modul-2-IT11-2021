@@ -313,7 +313,7 @@ Masih didalam parameter fungsi main dimana nanti akan membuat folder bedasarkan 
 - Output Folder dan atau zip pada mode ``` -z ```
 <img src="https://cdn.discordapp.com/attachments/830775203868573756/835349239026155540/outputz.jpg">
 
-- Output Folder dan atau zip jika dilakukan dengan mode ``` -x ```
+- Output Folder jika dilakukan dengan mode ``` -x ```
 <img src="https://cdn.discordapp.com/attachments/434303325408722945/835878760150073374/modexzbar.jpg">
 
 - Isi 
